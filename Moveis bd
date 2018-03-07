@@ -1,0 +1,65 @@
+create table motorista (
+    codmot integer primary key,
+    cpf numeric(11),
+    cnh numeric(10),
+    nome varchar(50),
+    endereço varchar(100)
+);
+
+create table veiculo(
+    placa char(7) primary key ,
+    capacidade integer
+);
+
+create table cliente (
+    codcli integer primary key,
+    nome varchar (50),
+    tel char(10),
+    endereço varchar(100),
+    cfp numeric(11),
+    email varchar (50)
+);
+
+create table produto (
+    codpro integer primary key,
+    custo numeric(11,2),
+    descricao text,
+    preco numeric(11,2),
+    nome varchar(50)
+);
+
+create table vendedor (
+    codvdd integer primary key,
+    cpf numeric(11),
+    v_comissao numeric(4,2),
+    nome varchar(50),
+    endereco varchar
+);
+
+create table venda (
+    numven integer primary key,
+    valor_total numeric(11,2),
+    codvdd integer references vendedor(codvdd),
+    codcli integer references cliente (codcli)
+);
+
+create table item_venda (
+    codpro integer references produto (codpro),
+    numven integer references venda(numven),
+    viunitario numeric(11,2),
+    qtd integer
+);
+
+create table entrega (
+    hora time,
+    data date,
+    numven integer references venda(numven),
+    placa char(7) references veiculo(placa),
+    codmot integer references motorista (codmot),
+    PRIMARY KEY(hora, data)
+    );
+
+insert into Motorista(CodMot, CPF, CNH, Nome, endereco) values (0001,12345678944,1234561891,'mané', 'Rua do boi');
+insert into Veiculo(Placa, Capacidade) values (1234567, 10);
+insert into Produto(CodPro, Custo, Descricao, Preco, Nome) values (2424, 24.24, 'pinguço', 30.20, 'gordo');
+insert into Cliente(CodCli, Nome, Tel, Endereco, CPF, Email) values (44411, 'Emanuel', 998558560, 'aaaaaa', 70232921404, 'gfgdfgsgsg');
