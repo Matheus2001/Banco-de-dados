@@ -20,46 +20,76 @@ create table cliente (
     email varchar (50)
 );
 
-create table produto (
-    codpro integer primary key,
-    custo numeric(11,2),
-    descricao text,
-    preco numeric(11,2),
-    nome varchar(50)
+create table Motorista(
+    CodMot integer PRIMARY KEY,
+    CPF numeric(11),
+    CNH numeric(10),
+    Nome varchar(50),
+    endereco varchar(100)
 );
 
-create table vendedor (
-    codvdd integer primary key,
-    cpf numeric(11),
-    v_comissao numeric(4,2),
-    nome varchar(50),
-    endereco varchar
+create table Veiculo(
+    placa char(7) PRIMARY KEY,
+    capacidade integer
 );
 
-create table venda (
-    numven integer primary key,
-    valor_total numeric(11,2),
-    codvdd integer references vendedor(codvdd),
-    codcli integer references cliente (codcli)
+create table Produto(
+    CodPro integer PRIMARY KEY,
+    Custo numeric(11,2),
+    Descricao text,
+    Preco numeric(11,2),
+    Nome varchar(50)
 );
 
-create table item_venda (
-    codpro integer references produto (codpro),
-    numven integer references venda(numven),
-    viunitario numeric(11,2),
-    qtd integer
+create table Cliente(
+    CodCli integer PRIMARY KEY,
+    Nome varchar(50),
+    Tel char(10),
+    Endereco varchar(100),
+    CPF numeric(11),
+    Email varchar(50)
 );
 
-create table entrega (
-    hora time,
-    data date,
-    numven integer references venda(numven),
-    placa char(7) references veiculo(placa),
-    codmot integer references motorista (codmot),
-    PRIMARY KEY(hora, data)
-    );
+create table Vendedor(
+    CodVdd integer PRIMARY KEY,
+    CPF numeric(11),
+    V_comissao numeric(4,2),
+    Nome varchar(50),
+    Endereco varchar(100)
+);
 
-insert into Motorista(CodMot, CPF, CNH, Nome, endereco) values (0001,12345678944,1234561891,'mané', 'Rua do boi');
+create table Venda(
+    NumVen integer primary key,
+    Valor_Total numeric(11,2),
+    CodVdd integer references Vendedor(CodVdd),
+    CodCli integer references Cliente(CodCli)
+);
+
+create table Item_venda(
+    CodPro integer references Produto(CodPro),
+    NumVen integer references Venda(NumVen),
+    vUnitario numeric(11,2),
+    Qtd integer,
+    primary key (CodPro, NumVen)
+);
+
+create table Entrega(
+    Hora time,
+    Data date,
+    NumVen integer references Venda(NumVen),
+    Placa char(7) references Veiculo(Placa),
+    CodMot integer references Motorista(CodMot),
+    PRIMARY KEY (Hora, Data)
+);
+
+insert into Motorista(CodMot, CPF, CNH, Nome, endereco) values (0001,12345678944,1234561891,'Matheus Nascimento', 'Rua da Kiss');
 insert into Veiculo(Placa, Capacidade) values (1234567, 10);
-insert into Produto(CodPro, Custo, Descricao, Preco, Nome) values (2424, 24.24, 'pinguço', 30.20, 'gordo');
-insert into Cliente(CodCli, Nome, Tel, Endereco, CPF, Email) values (44411, 'Emanuel', 998558560, 'aaaaaa', 70232921404, 'gfgdfgsgsg');
+insert into Produto(CodPro, Custo, Descricao, Preco, Nome) values (2424, 24.24, 'Linguça', 30.20, 'mito');
+insert into Cliente(CodCli, Nome, Tel, Endereco, CPF, Email) values (44411, 'Matheus mito', 998558560, 'aaaaaa', 70232921404, 'gfgdfgsgsg');
+insert into Vendedor(CodVdd, CPF, V_comissao, Nome, Endereco) values (5858, 70296821590, 50.50,'Bucetilda Pinto Rego','Rua da Missa');
+insert into Venda(NumVen, Valor_Total, CodVdd, CodCli) values (575, 2135.54, 5858, 44411);
+insert into Item_venda(CodPro, NumVen, vUnitario, Qtd) values (2424, 575, 246.24, 5);
+insert into Entrega(Hora, Data, NumVen, Placa, CodMot) values ('14:02', '2018/12/30', 575,  1234567, 0001);
+
+select * from Venda
+select * from entrega
